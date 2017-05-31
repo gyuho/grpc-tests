@@ -66,7 +66,6 @@ func TestStreamBlock(t *testing.T) {
 			_, err = cli.Recv()
 			if err != nil {
 				if strings.Contains(err.Error(), "transport is closing") {
-					fmt.Println(err)
 					return
 				}
 				t.Fatal(err)
@@ -77,7 +76,7 @@ func TestStreamBlock(t *testing.T) {
 	time.Sleep(2 * time.Second)
 	cli.Close()
 	close(stopc)
-	// <-donec
+	<-donec
 }
 
 type client struct {
