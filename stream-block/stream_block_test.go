@@ -4,24 +4,19 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"os"
+	"strings"
+	"sync"
 	"testing"
 	"time"
-
-	"strings"
 
 	"github.com/coreos/etcd/pkg/testutil"
 	"google.golang.org/grpc"
 )
 
 func TestMain(m *testing.M) {
-	v := m.Run()
-	if v == 0 && testutil.CheckLeakedGoroutine() {
-		os.Exit(1)
-	}
-	os.Exit(v)
+	m.Run()
+	testutil.CheckLeakedGoroutine()
 }
-
 func TestStreamBlock(t *testing.T) {
 	defer testutil.AfterTest(t)
 
@@ -35,52 +30,63 @@ func TestStreamBlock(t *testing.T) {
 
 	srv := grpc.NewServer()
 
-	ch := make(chan string, 1)
+	reqN := 10
+	ch := make(chan string, reqN)
 	RegisterElectionServer(srv, &testElectionServer{ch})
 
 	go func() {
 		srv.Serve(ln)
 	}()
-	defer srv.GracefulStop()
 
 	cli, err := newClient(addr)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	stopc, donec := make(chan struct{}), make(chan struct{})
+	var wg sync.WaitGroup
+	wg.Add(reqN)
 	go func() {
-		for {
-			select {
-			case ch <- "hello":
-			case <-stopc:
-				close(donec)
-				return
-			}
-		}
-	}()
+		for i := 0; i < reqN; i++ {
+			go func() {
+				defer wg.Done()
 
-	go func() {
-		for {
-			_, err = cli.Recv()
-			if err != nil {
-				if strings.Contains(err.Error(), "transport is closing") {
-					return
+				fmt.Println("Recv 1")
+				_, err = cli.stream.Recv()
+				fmt.Println("Recv 2")
+				if err != nil {
+					if strings.Contains(err.Error(), "transport is closing") {
+						return
+					}
+					t.Fatal(err)
 				}
-				t.Fatal(err)
-			}
+			}()
 		}
 	}()
 
-	time.Sleep(2 * time.Second)
-	cli.Close()
-	close(stopc)
-	<-donec
+	go func() {
+		time.Sleep(2 * time.Millisecond)
+		for i := 0; i < reqN; i++ {
+			ch <- "hello"
+		}
+	}()
+
+	time.Sleep(2 * time.Millisecond)
+
+	fmt.Println("Closing client!")
+	cli.cancel()
+	cli.conn.Close()
+	fmt.Println("Closed client!")
+
+	wg.Wait()
+
+	srv.GracefulStop()
 }
 
 type client struct {
 	conn   *grpc.ClientConn
 	stream Election_ObserveClient
+	ctx    context.Context
+	cancel func()
 }
 
 func newClient(addr string) (*client, error) {
@@ -88,24 +94,14 @@ func newClient(addr string) (*client, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	stream, err := NewElectionClient(conn).Observe(context.Background(), &LeaderRequest{})
+	ctx, cancel := context.WithCancel(context.Background())
+	stream, err := NewElectionClient(conn).Observe(ctx, &LeaderRequest{})
 	if err != nil {
 		conn.Close()
+		cancel()
 		return nil, err
 	}
-
-	return &client{conn, stream}, nil
-}
-
-func (c *client) Close() error { return c.conn.Close() }
-
-func (c *client) Recv() (string, error) {
-	rsp, err := c.stream.Recv()
-	if err != nil {
-		return "", err
-	}
-	return rsp.Data, nil
+	return &client{conn, stream, ctx, cancel}, nil
 }
 
 type testElectionServer struct {
@@ -122,6 +118,5 @@ func (srv *testElectionServer) Observe(_ *LeaderRequest, stream Election_Observe
 		case <-stream.Context().Done():
 			return stream.Context().Err()
 		}
-		time.Sleep(time.Second)
 	}
 }
