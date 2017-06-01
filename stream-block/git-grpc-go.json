@@ -2,8 +2,8 @@
   "ref": "refs/heads/master",
   "url": "https://api.github.com/repos/grpc/grpc-go/git/refs/heads/master",
   "object": {
-    "sha": "a1135905215520f6b2eceaca5c8c78bbc6b95889",
+    "sha": "a8cd0c13a447ed2fdbad93a9afbf7f4302d386ab",
     "type": "commit",
-    "url": "https://api.github.com/repos/grpc/grpc-go/git/commits/a1135905215520f6b2eceaca5c8c78bbc6b95889"
+    "url": "https://api.github.com/repos/grpc/grpc-go/git/commits/a8cd0c13a447ed2fdbad93a9afbf7f4302d386ab"
   }
 }

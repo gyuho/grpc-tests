@@ -8,20 +8,17 @@ It is generated from these files:
 	service.proto
 
 It has these top-level messages:
-	ObserveRequest
+	LeaderRequest
 	ObserveResponse
 */
 package streamblock
 
+import proto "github.com/golang/protobuf/proto"
+import fmt "fmt"
+import math "math"
+
 import (
-	fmt "fmt"
-
-	proto "github.com/golang/protobuf/proto"
-
-	math "math"
-
 	context "golang.org/x/net/context"
-
 	grpc "google.golang.org/grpc"
 )
 
@@ -36,16 +33,16 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type ObserveRequest struct {
+type LeaderRequest struct {
 	Data string `protobuf:"bytes,1,opt,name=data" json:"data,omitempty"`
 }
 
-func (m *ObserveRequest) Reset()                    { *m = ObserveRequest{} }
-func (m *ObserveRequest) String() string            { return proto.CompactTextString(m) }
-func (*ObserveRequest) ProtoMessage()               {}
-func (*ObserveRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (m *LeaderRequest) Reset()                    { *m = LeaderRequest{} }
+func (m *LeaderRequest) String() string            { return proto.CompactTextString(m) }
+func (*LeaderRequest) ProtoMessage()               {}
+func (*LeaderRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
-func (m *ObserveRequest) GetData() string {
+func (m *LeaderRequest) GetData() string {
 	if m != nil {
 		return m.Data
 	}
@@ -69,7 +66,7 @@ func (m *ObserveResponse) GetData() string {
 }
 
 func init() {
-	proto.RegisterType((*ObserveRequest)(nil), "streamblock.ObserveRequest")
+	proto.RegisterType((*LeaderRequest)(nil), "streamblock.LeaderRequest")
 	proto.RegisterType((*ObserveResponse)(nil), "streamblock.ObserveResponse")
 }
 
@@ -81,26 +78,26 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for Observer service
+// Client API for Election service
 
-type ObserverClient interface {
-	Observe(ctx context.Context, in *ObserveRequest, opts ...grpc.CallOption) (Observer_ObserveClient, error)
+type ElectionClient interface {
+	Observe(ctx context.Context, in *LeaderRequest, opts ...grpc.CallOption) (Election_ObserveClient, error)
 }
 
-type observerClient struct {
+type electionClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewObserverClient(cc *grpc.ClientConn) ObserverClient {
-	return &observerClient{cc}
+func NewElectionClient(cc *grpc.ClientConn) ElectionClient {
+	return &electionClient{cc}
 }
 
-func (c *observerClient) Observe(ctx context.Context, in *ObserveRequest, opts ...grpc.CallOption) (Observer_ObserveClient, error) {
-	stream, err := grpc.NewClientStream(ctx, &_Observer_serviceDesc.Streams[0], c.cc, "/streamblock.Observer/Observe", opts...)
+func (c *electionClient) Observe(ctx context.Context, in *LeaderRequest, opts ...grpc.CallOption) (Election_ObserveClient, error) {
+	stream, err := grpc.NewClientStream(ctx, &_Election_serviceDesc.Streams[0], c.cc, "/streamblock.Election/Observe", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &observerObserveClient{stream}
+	x := &electionObserveClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -110,16 +107,16 @@ func (c *observerClient) Observe(ctx context.Context, in *ObserveRequest, opts .
 	return x, nil
 }
 
-type Observer_ObserveClient interface {
+type Election_ObserveClient interface {
 	Recv() (*ObserveResponse, error)
 	grpc.ClientStream
 }
 
-type observerObserveClient struct {
+type electionObserveClient struct {
 	grpc.ClientStream
 }
 
-func (x *observerObserveClient) Recv() (*ObserveResponse, error) {
+func (x *electionObserveClient) Recv() (*ObserveResponse, error) {
 	m := new(ObserveResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -127,45 +124,45 @@ func (x *observerObserveClient) Recv() (*ObserveResponse, error) {
 	return m, nil
 }
 
-// Server API for Observer service
+// Server API for Election service
 
-type ObserverServer interface {
-	Observe(*ObserveRequest, Observer_ObserveServer) error
+type ElectionServer interface {
+	Observe(*LeaderRequest, Election_ObserveServer) error
 }
 
-func RegisterObserverServer(s *grpc.Server, srv ObserverServer) {
-	s.RegisterService(&_Observer_serviceDesc, srv)
+func RegisterElectionServer(s *grpc.Server, srv ElectionServer) {
+	s.RegisterService(&_Election_serviceDesc, srv)
 }
 
-func _Observer_Observe_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ObserveRequest)
+func _Election_Observe_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(LeaderRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(ObserverServer).Observe(m, &observerObserveServer{stream})
+	return srv.(ElectionServer).Observe(m, &electionObserveServer{stream})
 }
 
-type Observer_ObserveServer interface {
+type Election_ObserveServer interface {
 	Send(*ObserveResponse) error
 	grpc.ServerStream
 }
 
-type observerObserveServer struct {
+type electionObserveServer struct {
 	grpc.ServerStream
 }
 
-func (x *observerObserveServer) Send(m *ObserveResponse) error {
+func (x *electionObserveServer) Send(m *ObserveResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-var _Observer_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "streamblock.Observer",
-	HandlerType: (*ObserverServer)(nil),
+var _Election_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "streamblock.Election",
+	HandlerType: (*ElectionServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "Observe",
-			Handler:       _Observer_Observe_Handler,
+			Handler:       _Election_Observe_Handler,
 			ServerStreams: true,
 		},
 	},
@@ -175,14 +172,15 @@ var _Observer_serviceDesc = grpc.ServiceDesc{
 func init() { proto.RegisterFile("service.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 136 bytes of a gzipped FileDescriptorProto
+	// 147 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2d, 0x4e, 0x2d, 0x2a,
 	0xcb, 0x4c, 0x4e, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x2e, 0x2e, 0x29, 0x4a, 0x4d,
-	0xcc, 0x4d, 0xca, 0xc9, 0x4f, 0xce, 0x56, 0x52, 0xe1, 0xe2, 0xf3, 0x4f, 0x02, 0xc9, 0xa7, 0x06,
-	0xa5, 0x16, 0x96, 0xa6, 0x16, 0x97, 0x08, 0x09, 0x71, 0xb1, 0xa4, 0x24, 0x96, 0x24, 0x4a, 0x30,
-	0x2a, 0x30, 0x6a, 0x70, 0x06, 0x81, 0xd9, 0x4a, 0xaa, 0x5c, 0xfc, 0x70, 0x55, 0xc5, 0x05, 0xf9,
-	0x79, 0xc5, 0xa9, 0xd8, 0x94, 0x19, 0x85, 0x70, 0x71, 0x40, 0x95, 0x15, 0x09, 0x79, 0x70, 0xb1,
-	0x43, 0xd9, 0x42, 0xd2, 0x7a, 0x48, 0x36, 0xea, 0xa1, 0x5a, 0x27, 0x25, 0x83, 0x5d, 0x12, 0x62,
-	0x8b, 0x12, 0x83, 0x01, 0x63, 0x12, 0x1b, 0xd8, 0xd9, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff,
-	0xce, 0x28, 0xa5, 0x12, 0xc7, 0x00, 0x00, 0x00,
+	0xcc, 0x4d, 0xca, 0xc9, 0x4f, 0xce, 0x56, 0x52, 0xe6, 0xe2, 0xf5, 0x49, 0x4d, 0x4c, 0x49, 0x2d,
+	0x0a, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x12, 0xe2, 0x62, 0x49, 0x49, 0x2c, 0x49, 0x94,
+	0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x95, 0x54, 0xb9, 0xf8, 0xfd, 0x93, 0x40, 0x86,
+	0xa4, 0x06, 0xa5, 0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x62, 0x53, 0x66, 0x14, 0xcc, 0xc5, 0xe1,
+	0x9a, 0x93, 0x9a, 0x5c, 0x92, 0x99, 0x9f, 0x27, 0xe4, 0xce, 0xc5, 0x0e, 0xd5, 0x22, 0x24, 0xa5,
+	0x87, 0x64, 0xa1, 0x1e, 0x8a, 0x6d, 0x52, 0x32, 0x28, 0x72, 0x68, 0x96, 0x28, 0x31, 0x18, 0x30,
+	0x26, 0xb1, 0x81, 0x1d, 0x6d, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x38, 0xe8, 0x77, 0x4d, 0xc5,
+	0x00, 0x00, 0x00,
 }

@@ -30,19 +30,18 @@ func TestStreamBlock(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	addr := ln.Addr().String()
+	fmt.Println("serving:", addr)
 
 	srv := grpc.NewServer()
 
 	ch := make(chan string, 1)
-	RegisterObserverServer(srv, &testObserverServer{ch})
+	RegisterElectionServer(srv, &testElectionServer{ch})
 
 	go func() {
 		srv.Serve(ln)
 	}()
 	defer srv.GracefulStop()
-
-	addr := ln.Addr().String()
-	fmt.Println("serving:", addr)
 
 	cli, err := newClient(addr)
 	if err != nil {
@@ -81,7 +80,7 @@ func TestStreamBlock(t *testing.T) {
 
 type client struct {
 	conn   *grpc.ClientConn
-	stream Observer_ObserveClient
+	stream Election_ObserveClient
 }
 
 func newClient(addr string) (*client, error) {
@@ -90,7 +89,7 @@ func newClient(addr string) (*client, error) {
 		return nil, err
 	}
 
-	stream, err := NewObserverClient(conn).Observe(context.Background(), &ObserveRequest{})
+	stream, err := NewElectionClient(conn).Observe(context.Background(), &LeaderRequest{})
 	if err != nil {
 		conn.Close()
 		return nil, err
@@ -109,11 +108,11 @@ func (c *client) Recv() (string, error) {
 	return rsp.Data, nil
 }
 
-type testObserverServer struct {
+type testElectionServer struct {
 	ch chan string
 }
 
-func (srv *testObserverServer) Observe(_ *ObserveRequest, stream Observer_ObserveServer) error {
+func (srv *testElectionServer) Observe(_ *LeaderRequest, stream Election_ObserveServer) error {
 	for {
 		select {
 		case v := <-srv.ch:

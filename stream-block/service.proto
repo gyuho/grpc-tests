@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package streamblock;
 
-message ObserveRequest {
+message LeaderRequest {
   string data = 1;
 }
 
@@ -10,6 +10,6 @@ message ObserveResponse {
   string data = 1;
 }
 
-service Observer {
-  rpc Observe(ObserveRequest) returns (stream ObserveResponse) {}
+service Election {
+  rpc Observe(LeaderRequest) returns (stream ObserveResponse) {}
 }
