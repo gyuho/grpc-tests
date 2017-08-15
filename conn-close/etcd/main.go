@@ -26,7 +26,7 @@ func init() {
 }
 
 func main() {
-	dataDir := "default.etcd"
+	dataDir := filepath.Join(os.TempDir(), "etcd-test-data-dir")
 	os.RemoveAll(dataDir)
 	defer os.RemoveAll(dataDir)
 
