@@ -3,6 +3,9 @@ package connclose
 import (
 	"fmt"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 	"testing"
 	"time"
 
@@ -13,11 +16,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 )
-
-func TestMain(m *testing.M) {
-	m.Run()
-	testutil.CheckLeakedGoroutine()
-}
 
 func TestGreeter(t *testing.T) {
 	defer testutil.AfterTest(t)
@@ -40,10 +38,6 @@ func TestGreeter(t *testing.T) {
 		RegisterGreeterServer(srv, s)
 	}
 
-	test(t, eps)
-}
-
-func test(t *testing.T, eps []string) {
 	conn, err := grpc.Dial(
 		eps[0],
 		grpc.WithBlock(),
@@ -55,12 +49,11 @@ func test(t *testing.T, eps []string) {
 		grpc.WithBalancer(clientv3.NewSimpleBalancer(eps)),
 	)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	client := NewGreeterClient(conn)
-	_ = client
+	handleInterrupts(conn)
 
-	fmt.Println("waiting...")
+	fmt.Println("waiting after dial...")
 	select {}
 }
 
@@ -73,6 +66,34 @@ func (s *server) Greet(ctx context.Context, req *HelloRequest) (*HelloResponse, 
 	return nil, nil
 }
 
+func handleInterrupts(conn *grpc.ClientConn) {
+	notifier := make(chan os.Signal, 1)
+	signal.Notify(notifier, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		sig := <-notifier
+		fmt.Printf("received %q signal, shutting down...\n", sig)
+
+		fmt.Printf("closing %q\n", conn.GetState())
+		err := conn.Close()
+		fmt.Println("conn.Close error:", err)
+
+		signal.Stop(notifier)
+
+		pid := syscall.Getpid()
+		// exit directly if it is the "init" process, since the kernel will not help to kill pid 1.
+		if pid == 1 {
+			os.Exit(0)
+		}
+		syscall.Kill(pid, sig.(syscall.Signal))
+	}()
+}
+
+func TestMain(m *testing.M) {
+	m.Run()
+	testutil.CheckLeakedGoroutine()
+}
+
 /*
 add this to etcd/clientv3/balancer.go
 
@@ -80,15 +101,17 @@ func NewSimpleBalancer(eps []string) *simpleBalancer {
 	return newSimpleBalancer(eps)
 }
 
-
 === RUN   TestGreeter
-serving: 127.0.0.1:60473
-serving: 127.0.0.1:60474
-serving: 127.0.0.1:60475
-17:54:58.850108 [C] Notify!
-17:54:58.850286 [C] Notify!
-17:54:58.850820 [C] Up! 127.0.0.1:60473
-waiting...
-17:54:58.851080 [D] resetTransport(false): 127.0.0.1:60474 grpc: the connection is closing *errors.errorString
-17:54:58.851184 [D] resetTransport(false): 127.0.0.1:60475 grpc: the connection is closing *errors.errorString
+serving: 127.0.0.1:61019
+serving: 127.0.0.1:61020
+serving: 127.0.0.1:61021
+18:13:05.054162 [C] Notify!
+18:13:05.054351 [C] Notify!
+18:13:05.054919 [C] Up! 127.0.0.1:61019
+18:13:05.055334 [D] resetTransport(false): 127.0.0.1:61020 grpc: the connection is closing *errors.errorString
+18:13:05.055610 [D] resetTransport(false): 127.0.0.1:61021 grpc: the connection is closing *errors.errorString
+waiting after dial...
+^Creceived "interrupt" signal, shutting down...
+closing "READY"
+conn.Close error: <nil>
 */
