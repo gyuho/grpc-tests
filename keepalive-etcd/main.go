@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/coreos/etcd/clientv3"
@@ -30,15 +32,16 @@ func main() {
 	os.RemoveAll(dataDir)
 	defer os.RemoveAll(dataDir)
 
+	handleInterrupts(dataDir)
 	start(dataDir)
 
 	glog.Info("waiting... 1")
 	time.Sleep(5 * time.Second)
 
 	ccfg := clientv3.Config{
-		Endpoints: []string{"localhost:2379", "localhost:2381"},
-		// DialKeepAliveTime:    time.Second,
-		// DialKeepAliveTimeout: time.Second,
+		Endpoints:            []string{"localhost:2379", "localhost:2381"},
+		DialKeepAliveTime:    time.Second,
+		DialKeepAliveTimeout: time.Second,
 	}
 	cli, err := clientv3.New(ccfg)
 	if err != nil {
@@ -107,4 +110,26 @@ func start(dataDir string) {
 		}(cfg)
 	}
 	wg.Wait()
+}
+
+func handleInterrupts(dataDir string) {
+	notifier := make(chan os.Signal, 1)
+	signal.Notify(notifier, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		sig := <-notifier
+		glog.Infof("received %q signal, shutting down...", sig)
+
+		glog.Infof("removing %q", dataDir)
+		os.RemoveAll(dataDir)
+
+		signal.Stop(notifier)
+
+		pid := syscall.Getpid()
+		// exit directly if it is the "init" process, since the kernel will not help to kill pid 1.
+		if pid == 1 {
+			os.Exit(0)
+		}
+		syscall.Kill(pid, sig.(syscall.Signal))
+	}()
 }

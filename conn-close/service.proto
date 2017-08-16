@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package connclose;
+
+message HelloRequest {
+  string data = 1;
+}
+
+message HelloResponse {
+  string data = 1;
+}
+
+service Greeter {
+  rpc Greet(stream HelloRequest) returns (stream HelloResponse) {}
+}
