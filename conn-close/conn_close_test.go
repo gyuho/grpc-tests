@@ -9,6 +9,7 @@ import (
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/pkg/testutil"
 
+	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 )
@@ -42,21 +43,6 @@ func TestGreeter(t *testing.T) {
 	test(t, eps)
 }
 
-type server struct {
-	g *grpc.Server
-	l net.Listener
-}
-
-func (s *server) Greet(stream Greeter_GreetServer) error {
-	_, err := stream.Recv()
-	return err
-}
-
-// stream, err := client.Hello(context.Background())
-// if err != nil {
-// 	panic(err)
-// }
-
 func test(t *testing.T, eps []string) {
 	conn, err := grpc.Dial(
 		eps[0],
@@ -76,6 +62,15 @@ func test(t *testing.T, eps []string) {
 
 	fmt.Println("waiting...")
 	select {}
+}
+
+type server struct {
+	g *grpc.Server
+	l net.Listener
+}
+
+func (s *server) Greet(ctx context.Context, req *HelloRequest) (*HelloResponse, error) {
+	return nil, nil
 }
 
 /*

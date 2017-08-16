@@ -81,7 +81,7 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for Greeter service
 
 type GreeterClient interface {
-	Greet(ctx context.Context, opts ...grpc.CallOption) (Greeter_GreetClient, error)
+	Greet(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 }
 
 type greeterClient struct {
@@ -92,99 +92,67 @@ func NewGreeterClient(cc *grpc.ClientConn) GreeterClient {
 	return &greeterClient{cc}
 }
 
-func (c *greeterClient) Greet(ctx context.Context, opts ...grpc.CallOption) (Greeter_GreetClient, error) {
-	stream, err := grpc.NewClientStream(ctx, &_Greeter_serviceDesc.Streams[0], c.cc, "/connclose.Greeter/Greet", opts...)
+func (c *greeterClient) Greet(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+	out := new(HelloResponse)
+	err := grpc.Invoke(ctx, "/connclose.Greeter/Greet", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &greeterGreetClient{stream}
-	return x, nil
-}
-
-type Greeter_GreetClient interface {
-	Send(*HelloRequest) error
-	Recv() (*HelloResponse, error)
-	grpc.ClientStream
-}
-
-type greeterGreetClient struct {
-	grpc.ClientStream
-}
-
-func (x *greeterGreetClient) Send(m *HelloRequest) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *greeterGreetClient) Recv() (*HelloResponse, error) {
-	m := new(HelloResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // Server API for Greeter service
 
 type GreeterServer interface {
-	Greet(Greeter_GreetServer) error
+	Greet(context.Context, *HelloRequest) (*HelloResponse, error)
 }
 
 func RegisterGreeterServer(s *grpc.Server, srv GreeterServer) {
 	s.RegisterService(&_Greeter_serviceDesc, srv)
 }
 
-func _Greeter_Greet_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(GreeterServer).Greet(&greeterGreetServer{stream})
-}
-
-type Greeter_GreetServer interface {
-	Send(*HelloResponse) error
-	Recv() (*HelloRequest, error)
-	grpc.ServerStream
-}
-
-type greeterGreetServer struct {
-	grpc.ServerStream
-}
-
-func (x *greeterGreetServer) Send(m *HelloResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *greeterGreetServer) Recv() (*HelloRequest, error) {
-	m := new(HelloRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
+func _Greeter_Greet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelloRequest)
+	if err := dec(in); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if interceptor == nil {
+		return srv.(GreeterServer).Greet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connclose.Greeter/Greet",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GreeterServer).Greet(ctx, req.(*HelloRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _Greeter_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "connclose.Greeter",
 	HandlerType: (*GreeterServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
+	Methods: []grpc.MethodDesc{
 		{
-			StreamName:    "Greet",
-			Handler:       _Greeter_Greet_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
+			MethodName: "Greet",
+			Handler:    _Greeter_Greet_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "service.proto",
 }
 
 func init() { proto.RegisterFile("service.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 140 bytes of a gzipped FileDescriptorProto
+	// 136 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2d, 0x4e, 0x2d, 0x2a,
 	0xcb, 0x4c, 0x4e, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x4c, 0xce, 0xcf, 0xcb, 0x4b,
 	0xce, 0xc9, 0x2f, 0x4e, 0x55, 0x52, 0xe2, 0xe2, 0xf1, 0x48, 0xcd, 0xc9, 0xc9, 0x0f, 0x4a, 0x2d,
 	0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x12, 0xe2, 0x62, 0x49, 0x49, 0x2c, 0x49, 0x94, 0x60, 0x54, 0x60,
 	0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x95, 0x94, 0xb9, 0x78, 0xa1, 0x6a, 0x8a, 0x0b, 0xf2, 0xf3, 0x8a,
-	0x53, 0xb1, 0x29, 0x32, 0xf2, 0xe6, 0x62, 0x77, 0x2f, 0x4a, 0x4d, 0x2d, 0x49, 0x2d, 0x12, 0x72,
-	0xe0, 0x62, 0x05, 0x33, 0x85, 0xc4, 0xf5, 0xe0, 0x16, 0xe9, 0x21, 0xdb, 0x22, 0x25, 0x81, 0x29,
-	0x01, 0x31, 0x5a, 0x89, 0x41, 0x83, 0xd1, 0x80, 0x31, 0x89, 0x0d, 0xec, 0x4e, 0x63, 0x40, 0x00,
-	0x00, 0x00, 0xff, 0xff, 0x12, 0x55, 0x39, 0x30, 0xb8, 0x00, 0x00, 0x00,
+	0x53, 0xb1, 0x29, 0x32, 0x72, 0xe7, 0x62, 0x77, 0x2f, 0x4a, 0x4d, 0x2d, 0x49, 0x2d, 0x12, 0xb2,
+	0xe1, 0x62, 0x05, 0x33, 0x85, 0xc4, 0xf5, 0xe0, 0x16, 0xe9, 0x21, 0xdb, 0x22, 0x25, 0x81, 0x29,
+	0x01, 0x31, 0x5a, 0x89, 0x21, 0x89, 0x0d, 0xec, 0x46, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff,
+	0x33, 0x4e, 0xd6, 0x5f, 0xb4, 0x00, 0x00, 0x00,
 }
