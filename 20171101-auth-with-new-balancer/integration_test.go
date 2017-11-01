@@ -38,6 +38,27 @@ func TestTest(t *testing.T) {
 	select {}
 }
 
+/*
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 13:35:13 balancerWrapper: handle subconn state change: 0xc4206b0480, TRANSIENT_FAILURE
+INFO: 2017/11/01 13:35:13 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc420204660
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+addr: {localhost:52257964204522978970 0  <nil>}
+INFO: 2017/11/01 13:35:13 balancerWrapper: handle subconn state change: 0xc4205a8d20, CONNECTING
+INFO: 2017/11/01 13:35:13 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc420205bc0
+WARNING: 2017/11/01 13:35:13 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:52257964204522978970: connect: no such file or directory"; Reconnecting to {localhost:52257964204522978970 0  <nil>}
+WARNING: 2017/11/01 13:35:13 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:52257964204522978970: connect: no such file or directory"; Reconnecting to {localhost:52257964204522978970 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 13:35:13 balancerWrapper: handle subconn state change: 0xc4205a8d20, TRANSIENT_FAILURE
+INFO: 2017/11/01 13:35:13 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc420205bc0
+INFO: 2017/11/01 13:35:13 clientv3/health-balancer: removes "localhost:52257964204522978970" from unhealthy after 5s
+*/
+
 func authSetupUsers(t *testing.T, auth pb.AuthClient, users []user) {
 	for _, user := range users {
 		if _, err := auth.UserAdd(context.TODO(), &pb.AuthUserAddRequest{Name: user.name, Password: user.password}); err != nil {
