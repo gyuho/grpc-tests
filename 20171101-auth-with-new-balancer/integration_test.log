@@ -1,0 +1,212 @@
+
+================ NewUnixListener 127.0.0.1:2100184086 from github.com/coreos/etcd/integration.NewListenerWithAddr
+================ NewUnixListener 127.0.0.1:2100284086 from github.com/coreos/etcd/integration.NewListenerWithAddr
+================ NewUnixListener localhost:438561401591317920 from github.com/coreos/etcd/integration.(*member).listenGRPC
+================ NewUnixListener localhost:4385614015913179200 from github.com/coreos/etcd/integration.newBridge
+2017-11-01 15:18:18.035817 I | integration: launching 438561401591317920 (unix://localhost:4385614015913179200)
+2017-11-01 15:18:18.037987 I | etcdserver: name = 438561401591317920
+2017-11-01 15:18:18.038012 I | etcdserver: data dir = /var/folders/1x/0sf85stn6sb01sx6ncs7x_ph0000gn/T/etcd615802037
+2017-11-01 15:18:18.038019 I | etcdserver: member dir = /var/folders/1x/0sf85stn6sb01sx6ncs7x_ph0000gn/T/etcd615802037/member
+2017-11-01 15:18:18.038023 I | etcdserver: heartbeat = 10ms
+2017-11-01 15:18:18.038026 I | etcdserver: election = 100ms
+2017-11-01 15:18:18.038030 I | etcdserver: snapshot count = 0
+2017-11-01 15:18:18.038039 I | etcdserver: advertise client URLs = unix://127.0.0.1:2100284086
+2017-11-01 15:18:18.038045 I | etcdserver: initial advertise peer URLs = unix://127.0.0.1:2100184086
+2017-11-01 15:18:18.038054 I | etcdserver: initial cluster = 438561401591317920=unix://127.0.0.1:2100184086
+2017-11-01 15:18:18.178933 I | etcdserver: starting member afdaee28ee2b5712 in cluster 8bb293cd0c43db4e
+2017-11-01 15:18:18.178987 I | raft: afdaee28ee2b5712 became follower at term 0
+2017-11-01 15:18:18.179008 I | raft: newRaft afdaee28ee2b5712 [peers: [], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+2017-11-01 15:18:18.179017 I | raft: afdaee28ee2b5712 became follower at term 1
+2017-11-01 15:18:18.206141 W | auth: simple token is not cryptographically signed
+2017-11-01 15:18:18.228521 I | etcdserver: set snapshot count to default 100000
+2017-11-01 15:18:18.228558 I | etcdserver: starting server... [version: 3.2.0+git, cluster version: to_be_decided]
+2017-11-01 15:18:18.230068 I | integration: launched 438561401591317920 (unix://localhost:4385614015913179200)
+2017-11-01 15:18:18.230905 E | etcdserver: cannot monitor file descriptor usage (cannot get FDUsage on darwin)
+2017-11-01 15:18:18.238966 I | etcdserver/membership: added member afdaee28ee2b5712 [unix://127.0.0.1:2100184086] to cluster 8bb293cd0c43db4e
+2017-11-01 15:18:18.360601 I | raft: afdaee28ee2b5712 is starting a new election at term 1
+2017-11-01 15:18:18.360674 I | raft: afdaee28ee2b5712 became candidate at term 2
+2017-11-01 15:18:18.360693 I | raft: afdaee28ee2b5712 received MsgVoteResp from afdaee28ee2b5712 at term 2
+2017-11-01 15:18:18.360713 I | raft: afdaee28ee2b5712 became leader at term 2
+2017-11-01 15:18:18.360722 I | raft: raft.node: afdaee28ee2b5712 elected leader afdaee28ee2b5712 at term 2
+2017-11-01 15:18:18.361000 I | etcdserver: setting up the initial cluster version to 3.2
+2017-11-01 15:18:18.366186 N | etcdserver/membership: set the initial cluster version to 3.2
+2017-11-01 15:18:18.366248 I | etcdserver/api: enabled capabilities for version 3.2
+2017-11-01 15:18:18.366344 I | etcdserver: published {Name:438561401591317920 ClientURLs:[unix://127.0.0.1:2100284086]} to cluster 8bb293cd0c43db4e
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: IDLE, 0xc4201fb8c0
+INFO: 2017/11/01 15:18:18 dialing to target with scheme: ""
+INFO: 2017/11/01 15:18:18 could not get resolver for scheme: ""
+INFO: 2017/11/01 15:18:18 balancerWrapper: is pickfirst: false
+INFO: 2017/11/01 15:18:18 balancerWrapper: got update addr from Notify: [{localhost:4385614015913179200 <nil>}]
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: new subconn: [{localhost:4385614015913179200 0  <nil>}]
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+handleSubConnStateChange: READY
+--------- put READY
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc420178a70, CONNECTING
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fb8c0
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc420178a70, READY
+INFO: 2017/11/01 15:18:18 clientv3/balancer: pin "localhost:4385614015913179200"
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: READY, 0xc4201fb8c0
+INFO: 2017/11/01 15:18:18 balancerWrapper: got update addr from Notify: [{localhost:4385614015913179200 <nil>}]
+2017-11-01 15:18:18.492569 N | auth: added a new user: root
+2017-11-01 15:18:18.492630 W | etcdserver: apply entries took too long [120.629301ms for 1 entries]
+2017-11-01 15:18:18.492639 W | etcdserver: avoid queries with large range/delete range!
+2017-11-01 15:18:18.493304 N | auth: Role root is created
+2017-11-01 15:18:18.497002 N | auth: granted role root to user root
+2017-11-01 15:18:18.502687 N | auth: Authentication enabled
+INFO: 2017/11/01 15:18:18 dialing to target with scheme: ""
+INFO: 2017/11/01 15:18:18 could not get resolver for scheme: ""
+============= auth.authenticate 1
+Server.Authenticate name:"root" password:"123"
+Authenticate success? <nil> / name:"root" password:"123" simple_token:"nCfQKAtdBzJAcsTz"
+============= auth.authenticate 2 <nil> <nil>
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: IDLE, 0xc4201fbda0
+INFO: 2017/11/01 15:18:18 dialing to target with scheme: ""
+INFO: 2017/11/01 15:18:18 could not get resolver for scheme: ""
+wait...
+INFO: 2017/11/01 15:18:18 balancerWrapper: is pickfirst: false
+INFO: 2017/11/01 15:18:18 balancerWrapper: got update addr from Notify: [{localhost:4385614015913179200 <nil>}]
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: new subconn: [{localhost:4385614015913179200 0  <nil>}]
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+handleSubConnStateChange: READY
+--------- put READY
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc4200432b0, CONNECTING
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fbda0
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc4200432b0, READY
+INFO: 2017/11/01 15:18:18 clientv3/balancer: pin "localhost:4385614015913179200"
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: READY, 0xc4201fbda0
+INFO: 2017/11/01 15:18:18 balancerWrapper: got update addr from Notify: [{localhost:4385614015913179200 <nil>}]
+
+oerr: dial unix localhost:438561401591317920: connect: connection refused
+15:18:18.71026 -07 ================ NewUnixListener Close localhost:4385614015913179200 from github.com/coreos/etcd/integration.(*bridge).serveListen.func1
+
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:18 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:18 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:18 grpc: addrConn.transportMonitor exits due to: context canceled
+WARNING: 2017/11/01 15:18:18 grpc: addrConn.transportMonitor exits due to: context canceled
+transportMonitor handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:18 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:18 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc4200432b0, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:18 clientv3/health-balancer: marking "localhost:4385614015913179200" as unhealthy ("grpc: the connection is closing")
+INFO: 2017/11/01 15:18:18 clientv3/balancer: unpin "localhost:4385614015913179200" ("grpc: the connection is closing")
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fbda0
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc4200432b0, CONNECTING
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fbda0
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc4200432b0, TRANSIENT_FAILURE
+transportMonitor handleSubConnStateChange with TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fbda0
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:18 balancerWrapper: got update addr from Notify: [{localhost:4385614015913179200 <nil>}]
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+INFO: 2017/11/01 15:18:18 balancerWrapper: got update addr from Notify: [{localhost:4385614015913179200 <nil>}]
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:18 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:18 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc420178a70, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:18 clientv3/health-balancer: marking "localhost:4385614015913179200" as unhealthy ("grpc: the connection is closing")
+INFO: 2017/11/01 15:18:18 clientv3/balancer: unpin "localhost:4385614015913179200" ("grpc: the connection is closing")
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fb8c0
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc420178a70, CONNECTING
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fb8c0
+INFO: 2017/11/01 15:18:18 balancerWrapper: handle subconn state change: 0xc420178a70, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:18 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fb8c0
+INFO: 2017/11/01 15:18:18 balancerWrapper: got update addr from Notify: [{localhost:4385614015913179200 <nil>}]
+INFO: 2017/11/01 15:18:18 balancerWrapper: got update addr from Notify: [{localhost:4385614015913179200 <nil>}]
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+INFO: 2017/11/01 15:18:19 balancerWrapper: handle subconn state change: 0xc4200432b0, CONNECTING
+INFO: 2017/11/01 15:18:19 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fbda0
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:19 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:19 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:19 balancerWrapper: handle subconn state change: 0xc4200432b0, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:19 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fbda0
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+INFO: 2017/11/01 15:18:19 balancerWrapper: handle subconn state change: 0xc420178a70, CONNECTING
+INFO: 2017/11/01 15:18:19 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fb8c0
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:19 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:19 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:19 balancerWrapper: handle subconn state change: 0xc420178a70, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:19 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fb8c0
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+INFO: 2017/11/01 15:18:21 balancerWrapper: handle subconn state change: 0xc4200432b0, CONNECTING
+INFO: 2017/11/01 15:18:21 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fbda0
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:21 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:21 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:21 balancerWrapper: handle subconn state change: 0xc4200432b0, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:21 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fbda0
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+INFO: 2017/11/01 15:18:21 balancerWrapper: handle subconn state change: 0xc420178a70, CONNECTING
+INFO: 2017/11/01 15:18:21 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fb8c0
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:21 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:21 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:21 balancerWrapper: handle subconn state change: 0xc420178a70, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:21 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fb8c0
+
+
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+INFO: 2017/11/01 15:18:23 balancerWrapper: handle subconn state change: 0xc4200432b0, CONNECTING
+INFO: 2017/11/01 15:18:23 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fbda0
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:23 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:23 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:23 balancerWrapper: handle subconn state change: 0xc4200432b0, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:23 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fbda0
+handleSubConnStateChange: CONNECTING
+--------- put CONNECTING
+======== dialer.DialContext: unix localhost:4385614015913179200 / dial unix localhost:4385614015913179200: connect: no such file or directory
+grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:23 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+WARNING: 2017/11/01 15:18:23 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:4385614015913179200: connect: no such file or directory"; Reconnecting to {localhost:4385614015913179200 0  <nil>}
+resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
+handleSubConnStateChange: TRANSIENT_FAILURE
+--------- put TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:23 balancerWrapper: handle subconn state change: 0xc420178a70, CONNECTING
+INFO: 2017/11/01 15:18:23 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc4201fb8c0
+INFO: 2017/11/01 15:18:23 balancerWrapper: handle subconn state change: 0xc420178a70, TRANSIENT_FAILURE
+INFO: 2017/11/01 15:18:23 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc4201fb8c0
+INFO: 2017/11/01 15:18:24 clientv3/health-balancer: removes "localhost:4385614015913179200" from unhealthy after 3s
