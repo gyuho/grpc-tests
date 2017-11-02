@@ -34,45 +34,15 @@ func TestTest(t *testing.T) {
 	}
 	defer cli.Close()
 
+	println()
+	println()
+	println()
 	fmt.Println("wait...")
+	println()
+	println()
+	println()
 	select {}
 }
-
-/*
-resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
-handleSubConnStateChange: TRANSIENT_FAILURE
---------- put TRANSIENT_FAILURE
-INFO: 2017/11/01 13:35:13 balancerWrapper: handle subconn state change: 0xc4206b0480, TRANSIENT_FAILURE
-INFO: 2017/11/01 13:35:13 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc420204660
-handleSubConnStateChange: CONNECTING
---------- put CONNECTING
-addr: {localhost:52257964204522978970 0  <nil>}
-INFO: 2017/11/01 13:35:13 balancerWrapper: handle subconn state change: 0xc4205a8d20, CONNECTING
-INFO: 2017/11/01 13:35:13 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc420205bc0
-WARNING: 2017/11/01 13:35:13 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:52257964204522978970: connect: no such file or directory"; Reconnecting to {localhost:52257964204522978970 0  <nil>}
-WARNING: 2017/11/01 13:35:13 grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: Error while dialing dial unix localhost:52257964204522978970: connect: no such file or directory"; Reconnecting to {localhost:52257964204522978970 0  <nil>}
-resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
-handleSubConnStateChange: TRANSIENT_FAILURE
---------- put TRANSIENT_FAILURE
-INFO: 2017/11/01 13:35:13 balancerWrapper: handle subconn state change: 0xc4205a8d20, TRANSIENT_FAILURE
-INFO: 2017/11/01 13:35:13 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc420205bc0
-INFO: 2017/11/01 13:35:13 clientv3/health-balancer: removes "localhost:52257964204522978970" from unhealthy after 5s
-*/
-
-/*
-port: Error while dialing dial unix localhost:61642350400976142530: connect: no such file or directory"; Reconnecting to {localhost:61642350400976142530 0  <nil>}
-resetTransport handleSubConnStateChange with TRANSIENT_FAILURE
-handleSubConnStateChange: TRANSIENT_FAILURE
---------- put TRANSIENT_FAILURE
-INFO: 2017/11/01 14:33:21 balancerWrapper: handle subconn state change: 0xc4201e9a50, TRANSIENT_FAILURE
-INFO: 2017/11/01 14:33:21 ccBalancerWrapper: updating state and picker called by balancer: TRANSIENT_FAILURE, 0xc42020f560
-INFO: 2017/11/01 14:33:22 clientv3/health-balancer: removes "localhost:61642350400976142530" from unhealthy after 5s
-handleSubConnStateChange: CONNECTING
---------- put CONNECTING
-INFO: 2017/11/01 14:33:27 balancerWrapper: handle subconn state change: 0xc4201e92f0, CONNECTING
-INFO: 2017/11/01 14:33:27 ccBalancerWrapper: updating state and picker called by balancer: CONNECTING, 0xc42020ea80
-======== dialer.DialContext: unix localhost:61642350400976142530 / dial unix localhost:61642350400976142530: connect: no such file or directory
-*/
 
 func authSetupUsers(t *testing.T, auth pb.AuthClient, users []user) {
 	for _, user := range users {
